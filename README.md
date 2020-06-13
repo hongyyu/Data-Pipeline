@@ -41,7 +41,7 @@ table and four dimension tables) showing below with column names in the second l
 ## How to Run
 Instead of run Airflow in the local environment, it is easier to run with `docker` container. For installing 
 docker, please click [here](https://docs.docker.com/docker-for-mac/install/). 
-#### Set up Docker container
+#### *Set up Docker container*
 In order to set up and run Airflow using docker, after instlling docker in your local computer, 
 there are several steps:
 
@@ -59,15 +59,15 @@ It is also possible to use command line.
 ```$xslt
 docker exec -ti <container name> bash
 ```
-#### Set up Connection to **AWS** and **Redshift**
+#### *Set up Connection to **AWS** and **Redshift***
 On the Airflow UI, follow the tab Admin -> Connections -> Create to set proper connection to both `AWS` and 
 `Redshift`.
-- AWS
+- `AWS`
     - Conn Id: aws_credentials
     - Conn Type: Amazon Web Services
     - Login: **Your AWS ID**
     - Password: **Your AWS Secret Key**
-- Redshift
+- `Redshift`
     - Conn Id: redshift
     - Conn Type: Postgres
     - Host: **Your Redshift Cluster Endpoint**
@@ -75,6 +75,7 @@ On the Airflow UI, follow the tab Admin -> Connections -> Create to set proper c
     - Login: **Redshift User Name**
     - Password: **Redshift User Password**
     - Port: **Redshift Port**
-#### Run the DAG
-1. `Turn On` the DAG so that the Scheduler could schedule what tasks to put into the queue.
-2. Click `Trigger DAG` and then wait until complete.
+#### *Run the DAG*
+1. `Open` the Airflow UI
+2. `Turn On` the DAG so that the Scheduler could schedule what tasks to put into the queue.
+3. Click `Trigger DAG` and then wait until complete.
