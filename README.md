@@ -52,9 +52,9 @@ docker pull puckel/docker-airflow
 Then, run the docker image for Apache Airflow, and now you could visit Airflow UI at 
 [http://localhost:8080/](http://localhost:8080/). For make your local project work in the docker container,
 set appropriate path `/path/to/your/dag` below.
-```$xslt
-docker run -d -p 8080:8080 -v /path/to/your/dag:/usr/local/airflow/dags  puckel/docker-airflow webserver
-```
+<pre>
+docker run -d -p 8080:8080 -v <b>/path/to/your/dag</b>:/usr/local/airflow/dags  puckel/docker-airflow webserver
+</pre>
 It is also possible to use command line.
 ```$xslt
 docker exec -ti <container name> bash
