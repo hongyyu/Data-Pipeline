@@ -76,6 +76,8 @@ On the Airflow UI, follow the tab Admin -> Connections -> Create to set proper c
     - Password: **Redshift User Password**
     - Port: **Redshift Port**
 #### *Run the DAG*
-1. `Open` the Airflow UI
-2. `Turn On` the DAG so that the Scheduler could schedule what tasks to put into the queue.
-3. Click `Trigger DAG` and then wait until complete.
+1. `Run` the `create_tables.sql` script on your Redshift cluster for creating appropriated tables
+which are localed under `dags` folder.
+2. `Open` the Airflow UI.
+3. `Turn On` the DAG so that the Scheduler could schedule what tasks to put into the queue.
+4. Click `Trigger DAG` and then wait until complete.

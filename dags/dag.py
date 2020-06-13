@@ -2,7 +2,6 @@ from datetime import datetime, timedelta
 import os
 from airflow import DAG
 from airflow.operators.dummy_operator import DummyOperator
-from airflow.operators.postgres_operator import PostgresOperator
 from plugins.operators import (StageToRedshiftOperator, LoadFactOperator,
                                LoadDimensionOperator, DataQualityOperator)
 from plugins.helpers import SqlQueries
@@ -29,24 +28,16 @@ default_args = {
     'max_active_runs': 1
 }
 
-# Create dag which refresh every 5 minutes
+# DAG with schedule interval once an  hour
 dag = DAG(
     dag_id='dag_etl_redshift',
     default_args=default_args,
     description='Load and transform data in Redshift with Airflow',
-    schedule_interval='*/5 * * * *'
+    schedule_interval='0 * * * *'
 )
 
 # Dummy operator for beginning
 start_operator = DummyOperator(task_id='Begin_execution',  dag=dag)
-
-# Create tables
-create_tables = PostgresOperator(
-    task_id='Create_tables',
-    dag=dag,
-    postgres_conn_id='redshift',
-    sql='create_tables.sql'
-)
 
 # Tasks for creating and loading data into staging_events from S3 to Redshift cluster
 stage_events_to_redshift = StageToRedshiftOperator(
@@ -133,11 +124,9 @@ end_operator = DummyOperator(task_id='Stop_execution',  dag=dag)
 
 # Set dependencies for loading and transforming data with redshift
 # For dag visualization please look at airflow UI
-start_operator >> create_tables
-create_tables >> stage_events_to_redshift >> load_songplays_table
-create_tables >> stage_songs_to_redshift >> load_songplays_table
-load_songplays_table >> load_user_dimension_table >> run_quality_checks
-load_songplays_table >> load_song_dimension_table >> run_quality_checks
-load_songplays_table >> load_artist_dimension_table >> run_quality_checks
-load_songplays_table >> load_time_dimension_table >> run_quality_checks
+start_operator >> [stage_events_to_redshift, stage_songs_to_redshift] >> load_songplays_table
+load_songplays_table >> [load_user_dimension_table,
+                         load_song_dimension_table,
+                         load_artist_dimension_table,
+                         load_time_dimension_table] >> run_quality_checks
 run_quality_checks >> end_operator
